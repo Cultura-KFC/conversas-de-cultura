@@ -133,7 +133,7 @@ html[data-mode=big] #app{max-width:900px}
 .qr svg{display:block;width:100%;height:auto}
 .btn2{min-height:54px;border-radius:999px;font-weight:800;background:#fff;color:var(--red);display:flex;align-items:center;justify-content:center;text-decoration:none;width:100%}
 .btn2.k{background:var(--ink);color:#fff}
-.ov{position:fixed;inset:0;z-index:50;background:var(--paper);overflow:auto;padding:16px calc(16px + env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) 16px}.ov[hidden]{display:none}.ovi{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}.pcv{width:100%;height:auto;border-radius:14px;box-shadow:0 0 0 2px #e2dcd2;touch-action:none;cursor:grab;display:block}.zm{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}.zm input{flex:1;accent-color:var(--red);height:28px}.hint2{font-size:15px;color:var(--muted);margin-top:-4px}.ctl{display:flex;flex-direction:column;gap:10px}
+.ov{position:fixed;inset:0;z-index:50;background:var(--paper);overflow:auto;padding:16px calc(16px + env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) 16px}.ov[hidden]{display:none}.btn2[hidden]{display:none}.ovi{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}.pcv{width:100%;height:auto;border-radius:14px;box-shadow:0 0 0 2px #e2dcd2;touch-action:none;cursor:grab;display:block}.zm{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}.zm input{flex:1;accent-color:var(--red);height:28px}.hint2{font-size:15px;color:var(--muted);margin-top:-4px}.ctl{display:flex;flex-direction:column;gap:10px}
 .btn2.g{background:transparent;color:var(--ink);border:2px solid var(--ink)}
 @media (min-width:760px) and (min-height:700px){.ovi{max-width:1000px;display:grid;grid-template-columns:480px 1fr;column-gap:28px;row-gap:10px;align-content:start;align-items:start}.ovi>h3{grid-column:1/-1}.ctl{display:flex;flex-direction:column;gap:10px}}
 
@@ -224,7 +224,7 @@ var S=[
   +'<div class="say"><span class="lab">Diga</span>Guardião é quem cuida do que é importante. Hoje, a gente assume esse papel juntos.</div>'
   +'<div class="oath"><div class="shield">'+SHIELD+'</div><div class="ot">Somos guardiões da nossa cultura</div>'
   +K.map(function(k){return '<div class="ol" style="--pc:'+P[k].cor+'"><span><img src="'+P[k].ico+'" alt=""></span>'+P[k].lema+'</div>'}).join('')+'</div>'
-  +'<div class="do fr2"><div class="ph">'+PHOTO()+'</div><div><span class="lab">Faça</span>Tirem uma foto do time com o <b>gesto de cultura</b> que vocês escolherem, como um coração. Fiquem à vontade!<br><br>Envie a foto aqui, informando o <b>nome da loja</b>.</div></div>'
+  +'<div class="do fr2"><div class="ph">'+PHOTO()+'</div><div><span class="lab">Faça</span>Tirem uma foto do time, <b>na horizontal</b>, com o <b>gesto de cultura</b> que vocês escolherem, como um coração. Fiquem à vontade!<br><br>Envie a foto aqui, informando o <b>nome da loja</b>.</div></div>'
   +'<div class="upl"><input id="lj" class="inp" type="text" maxlength="60" placeholder="Nome da loja" autocomplete="off"><input id="ph" type="file" accept="image/*" hidden><button class="btn2 rd" id="pick" type="button">Escolher a foto do time</button><p id="phst" class="phst"></p></div>'
   },
  {h:'<div class="step">5 de 5 · Desafio</div><h2 class="disp big">Bora ganhar o seu card de craque?</h2>'
@@ -301,7 +301,7 @@ var rafP=0;function redrawTeam(){if(rafP)return;rafP=requestAnimationFrame(funct
 function ensureOv(){
   if(document.getElementById('ov'))return;
   var d=document.createElement('div');d.id='ov';d.className='ov';d.hidden=true;
-  d.innerHTML='<div class="ovi"><h3 class="disp" style="font-size:34px">Confira o card do time</h3><canvas id="pcv" class="pcv"></canvas><div class="ctl"><label class="zm">Zoom<input id="pz" type="range" min="1" max="3" step="0.01" value="1"></label><p class="hint2">Arraste a foto para enquadrar.</p><input id="lj2" class="inp" type="text" maxlength="60" placeholder="Nome da loja" autocomplete="off"><button class="btn2 rd" id="psend" type="button">Enviar a foto</button><button class="btn2 k" id="pchg" type="button">Escolher outra foto</button><button class="btn2 g" id="pcan" type="button">Cancelar</button><p id="phst2" class="phst"></p></div></div>';
+  d.innerHTML='<div class="ovi"><h3 class="disp" style="font-size:34px">Confira o card do time</h3><canvas id="pcv" class="pcv"></canvas><div class="ctl"><label class="zm">Zoom<input id="pz" type="range" min="1" max="3" step="0.01" value="1"></label><p class="hint2">Arraste a foto para enquadrar. Foto na horizontal fica melhor.</p><input id="lj2" class="inp" type="text" maxlength="60" placeholder="Nome da loja" autocomplete="off"><button class="btn2 rd" id="psend" type="button">Enviar a foto</button><button class="btn2 k" id="pchg" type="button">Escolher outra foto</button><button class="btn2 g" id="pcan" type="button">Cancelar</button><p id="phst2" class="phst"></p></div></div>';
   document.body.appendChild(d);
   var c=d.querySelector('#pcv'),drag=null;
   c.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY};try{c.setPointerCapture(e.pointerId)}catch(_){}});
@@ -313,14 +313,15 @@ function ensureOv(){
   d.querySelector('#pchg').onclick=function(){document.getElementById('ph').click()};
   d.querySelector('#psend').onclick=function(){
     var btn=this,st=document.getElementById('phst2');
-    if(btn.dataset.done){d.hidden=true;btn.dataset.done='';btn.textContent='Enviar a foto';return}
+    if(btn.dataset.done){d.hidden=true;btn.dataset.done='';btn.textContent='Enviar a foto';d.querySelector('#pchg').hidden=false;d.querySelector('#pcan').hidden=false;var nx=document.getElementById('next');if(nx&&gi<S.length-1)nx.click();return}
     var loja=(document.getElementById('lj2').value||'').trim();
     if(!loja){st.textContent='Escreva o nome da loja.';st.style.color='#c70023';document.getElementById('lj2').focus();return}
     btn.disabled=true;st.style.color='';st.textContent='Enviando...';
     drawTeam();
     var body=JSON.stringify({loja:'Foto do time · '+loja,nome:'Gesto de cultura',nota:'',imagem:c.toDataURL('image/jpeg',.88)});
     fetch(CARD_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:body})
-      .then(function(){st.textContent='Foto enviada! Obrigada, time.';st.style.color='#0a7a3d';btn.disabled=false;btn.textContent='Fechar';btn.dataset.done='1';
+      .then(function(){st.textContent='Foto enviada! Obrigada, time. Toque em Continuar.';st.style.color='#0a7a3d';btn.disabled=false;btn.textContent='Continuar';btn.dataset.done='1';
+        d.querySelector('#pchg').hidden=true;d.querySelector('#pcan').hidden=true;
         var m=document.getElementById('phst');if(m){m.textContent='Foto enviada! Obrigada, time.';m.style.color='#0a7a3d'}})
       .catch(function(){st.textContent='Não foi possível enviar. Tente de novo.';st.style.color='#c70023';btn.disabled=false});
   };
@@ -341,10 +342,10 @@ function wireUpload(){
         var m=1800,k=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement('canvas');
         c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
         var im2=new Image();im2.onload=function(){
-          PH.img=im2;PH.z=1;PH.ox=0;PH.oy=0;
+          PH.img=im2;PH.z=1;PH.ox=0;PH.oy=0;if(im2.height>im2.width*1.05){var rr0=Math.max(960/im2.width,640/im2.height);PH.oy=(im2.height*rr0-640)/2*0.6}
           var ov=document.getElementById('ov');ov.hidden=false;ov.scrollTop=0;
           document.getElementById('pz').value=1;document.getElementById('lj2').value=lj.value;
-          var b=document.getElementById('psend');b.dataset.done='';b.textContent='Enviar a foto';b.disabled=false;
+          var b=document.getElementById('psend');b.dataset.done='';b.textContent='Enviar a foto';b.disabled=false;document.getElementById('pchg').hidden=false;document.getElementById('pcan').hidden=false;
           document.getElementById('phst2').textContent='';st.textContent='';
           (document.fonts&&document.fonts.load?Promise.all([document.fonts.load('italic 800 40px "Barlow Condensed"'),document.fonts.load('800 40px Barlow')]).catch(function(){}):Promise.resolve()).then(drawTeam);
           ph.value='';
